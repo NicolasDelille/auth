@@ -2,7 +2,7 @@
 include("db.php");
 include("functions.php");
 
-
+// Définition des variables d'erreur
 $email_error = "";
 $emailField_error = "";
 $username_error = "";
@@ -15,7 +15,7 @@ $passwordConfirmField_error = "";
 
 
 if(!empty($_POST)){
-	pr($_POST);
+	// pr($_POST);
 
 		// attribtion des variables
 	$email = $_POST['email'];
@@ -55,12 +55,8 @@ if(!empty($_POST)){
 		$username_error = "Veuillez renseigner votre identifiant";
 		$usernameField_error = "inputError";
 	}
-	elseif(strlen($username < 2)){
-		$username_error = "Le nom d'utilisateur trop court";
-		$usernameField_error = "inputError";
-	}
 	elseif (strlen($username) > 255) {
-		$username_error = "Le nom d'utilisateur trop court";
+		$username_error = "Le nom d'utilisateur trop long";
 		$usernameField_error = "inputError";
 	}
 
@@ -94,7 +90,7 @@ if(!empty($_POST)){
 
 	if ($email_error == "" && $username_error == "" && $password_error == "" && $passwordConfirm_error == "") {
 		$sql = "INSERT INTO users(id, email, username, password, date_created, date_modified) 
-		VALUES (NULL, :email, :username, :password, NOW(), NOW())";
+		VALUES (NULL, :email, :username, :password, NOW(), NULL)";
 		
 
 		$sth = $dbh->prepare($sql);
@@ -103,6 +99,7 @@ if(!empty($_POST)){
 		$sth->bindValue(':email',$email);
 		$sth->bindValue(':username',$username);
 		$sth->bindValue(':password',$password);
+
 		$sth->execute();
 	}
 
@@ -132,40 +129,32 @@ if(!empty($_POST)){
 					<label for="email" class="col-lg-2 control-label">Email</label>
 					<div class="col-lg-10">
 						<input class="form-control <?php echo $emailField_error?>" id="email" name="email" placeholder="Email" type="text">
+						<p class="text-danger"><?php echo $email_error?></p>
 					</div>
-					<p class="lead text-danger">
-						<?php echo $email_error?>
-					</p>
 				</div>
 							
 				<div class="form-group">
 					<label for="username" class="col-lg-2 control-label">Nom d'utilisateur</label>
 					<div class="col-lg-10">
 						<input class="form-control <?php echo $usernameField_error?>" id="username" name="username" placeholder="Nom d'utilisateur" type="text">
+						<p class="text-danger"><?php echo $username_error?></p>
 					</div>
-					<p class="lead text-danger">
-						<?php echo $username_error?>
-					</p>
 				</div>
 
 				<div class="form-group">
 					<label for="password" class="col-lg-2 control-label">Mot de passe</label>
 					<div class="col-lg-10">
 						<input class="form-control <?php echo $passwordField_error?>" id="password" name="password" type="password">
+						<p class="text-danger"><?php echo $password_error?></p>
 					</div>
-					<p class="lead text-danger">
-						<?php echo $password_error?>
-					</p>
 				</div>
 		
 				<div class="form-group">
 					<label for="passwordConfirm" class="col-lg-2 control-label">Confirmer votre mot de passe</label>
 					<div class="col-lg-10">
 						<input class="form-control <?php echo $passwordConfirmField_error?>" id="passwordConfirm" name="passwordConfirm" type="password">
+						<p class="text-danger"><?php echo $passwordConfirm_error?></p>
 					</div>
-					<p class="lead text-danger">
-						<?php echo $passwordConfirm_error?>
-					</p>
 				</div>
 	
 				<div class="form-group">
@@ -180,5 +169,8 @@ if(!empty($_POST)){
 		</form>
 
 	</div>
+	<footer>
+		<p></p>
+	</footer>
 </body>
 </html>

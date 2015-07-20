@@ -1,6 +1,9 @@
 .container{
 	margin: 100px auto;
 }
+h1{
+	text-align: center;
+}
 
 .btn:focus{
 	outline: none;
