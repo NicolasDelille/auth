@@ -2,6 +2,7 @@
 include("db.php");
 include("functions.php");
 
+
 // Définition des variables d'erreur
 $email_error = "";
 $emailField_error = "";
@@ -98,7 +99,10 @@ if(!empty($_POST)){
 		// protection des injonctions sql
 		$sth->bindValue(':email',$email);
 		$sth->bindValue(':username',$username);
-		$sth->bindValue(':password',$password);
+
+		// hashage
+		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+		$sth->bindValue(':password',$hashedPassword);
 
 		$sth->execute();
 	}
