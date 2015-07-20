@@ -1,0 +1,11 @@
+.container{
+	margin: 100px auto;
+}
+
+.btn:focus{
+	outline: none;
+}
+
+.inputError{
+	border : 1px solid red;
+}
