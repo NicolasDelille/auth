@@ -46,6 +46,19 @@ if(!empty($_POST)){
 		$email_error = "Mauvais format d'adresse email";
 		$emailField_error = "inputError";
 	}
+	else{
+		$sql = "SELECT email
+				FROM users
+				WHERE email = :email";
+
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array(":email" => $email));
+		$foundEmail = $sth->fetchColumn();
+
+		if ($foundEmail){
+			$email_error = "Cet email est déjà enregistré ici !";
+		}
+	}
 
 				// protection injection XSS et suppression des espaces en début et fin de chaîne...
 	$email = trim(strip_tags($email));
@@ -59,6 +72,19 @@ if(!empty($_POST)){
 	elseif (strlen($username) > 255) {
 		$username_error = "Le nom d'utilisateur trop long";
 		$usernameField_error = "inputError";
+	}
+	else{
+		$sql = "SELECT username
+				FROM users
+				WHERE username = :username";
+
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array(":username" => $username));
+		$foundUsername = $sth->fetchColumn();
+
+		if ($foundUsername){
+			$username_error = "Ce nom d'utilisateur est déjà enregistré ici !";
+		}
 	}
 
 				// protection injection XSS et suppression des espaces en début et fin de chaîne...
@@ -91,7 +117,7 @@ if(!empty($_POST)){
 
 	if ($email_error == "" && $username_error == "" && $password_error == "" && $passwordConfirm_error == "") {
 		$sql = "INSERT INTO users(id, email, username, password, date_created, date_modified) 
-		VALUES (NULL, :email, :username, :password, NOW(), NULL)";
+				VALUES (NULL, :email, :username, :password, NOW(), NULL)";
 		
 
 		$sth = $dbh->prepare($sql);
@@ -173,8 +199,6 @@ if(!empty($_POST)){
 		</form>
 
 	</div>
-	<footer>
-		<p></p>
-	</footer>
+	
 </body>
 </html>
