@@ -4,10 +4,11 @@
 	// pr($_SESSION);
 	if (empty($_SESSION['user'])) {
 		header("location: login.php");
+		die();
 	}
 
 	// pr($_SESSION['user']);
-	$user = $_SESSION['user'];
+	// $user = $_SESSION['user'];
 	// echo $user['username'];
 		
 	
@@ -22,10 +23,10 @@
 <body>
 	<div class="container">
 		
-	<header><p><?php echo $user['username']?>
-		<a href="logout.php" class="btn btn-primary btn-xs">Log out</a></p>
+	<header><p><?php echo $_SESSION['user']['username']?></p>
+		<a href="logout.php" class="btn btn-danger btn-xs">Log out</a>
 	</header>
-	<h1>Bienvenue <?php echo $user['username']?>!</h1>
+	<h1>Bienvenue <?php echo $_SESSION['user']['username']?>!</h1>
 	
 	</div>
 </body>
