@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("config.php");
 include("db.php");
 include("functions.php");
@@ -154,6 +155,22 @@ if(!empty($_POST)){
 		$sth->bindValue(':password',$hashedPassword);
 
 		$sth->execute();
+
+		// connecter l'utilisateur programmatiquement
+		// on va recherche toutes les infos que l'on vient d'insérer
+		$sql = "SELECT id, email, username, password, date_created, date_modified
+				FROM users
+				WHERE id = :id";
+
+				$sth = $dbh->prepare($sql);
+				$sth->bindValue(":id",$dbh->lastInsertId());
+				$sth->execute();
+				$user = $sth->fetch();
+
+		$_SESSION['user'] = $user;
+		// on redirige vers la page protégée
+		header("location: welcome.php");
+		die();
 	}
 
 
