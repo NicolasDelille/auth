@@ -17,7 +17,7 @@ $passwordConfirmField_error = "";
 
 
 if(!empty($_POST)){
-	// pr($_POST);
+	pr($_POST);
 
 		// attribtion des variables
 	$email = $_POST['email'];
@@ -65,14 +65,23 @@ if(!empty($_POST)){
 	$email = trim(strip_tags($email));
 
 			// username
+	$usernameRegexp = "/^[\p{L}0-9._-]{2,100}$/u";
 				// longueur de l'input
 	if (empty($username)) {
 		$username_error = "Veuillez renseigner votre identifiant";
 		$usernameField_error = "inputError";
 	}
-	elseif (strlen($username) > 255) {
+	elseif (strlen($username) > 100) {
 		$username_error = "Le nom d'utilisateur trop long";
 		$usernameField_error = "inputError";
+	}
+				// username doit être différent d'un email
+	elseif (filter_var($username, FILTER_VALIDATE_EMAIL)) {
+		$username_error = "Veuillez ne pas utiliser d'email comme pseudo !";
+	}
+				// contient uniquement des lettre des chiffres des tirets et underscores
+	elseif (!preg_match($usernameRegexp, $username)) {
+		$username_error = "Votre nom doit correspondre à /^[\p{L}0-9._-]{2,100}$/u";
 	}
 	else{
 		$sql = "SELECT username
