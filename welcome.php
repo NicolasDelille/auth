@@ -1,5 +1,8 @@
 <?php
 	session_start();
+	if (empty($_SESSION)) {
+		header("location: login.php");
+	}
 	include ('functions.php');
 
 	// pr($_SESSION['user']);
