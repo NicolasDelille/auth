@@ -1,10 +1,15 @@
 <?php
 	session_start();
+	include("config.php");
 	include("vendor/autoload.php");
 	include("functions.php");
 	include("db.php");
 
 	// pr($_POST);
+	if (empty($_POST)) {
+		header("Location: login.php");
+		die();
+	}
 	
 	$email = $_POST['email'];
 	$password = $_POST['password'];
