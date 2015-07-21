@@ -100,6 +100,8 @@ if(!empty($_POST)){
 				// protection injection XSS et suppression des espaces en début et fin de chaîne...
 	$username = trim(strip_tags($username));
 
+
+
 			// password
 	if (empty($password)) {
 		$password_error = "Veuillez renseigner votre mot de passe";
@@ -108,6 +110,17 @@ if(!empty($_POST)){
 	elseif (strlen($password) < 6) {
 		$passwordField_error = "Votre mot de passe doit contenir au moins 6 caractères";
 	}
+	else{
+		// le mot de passe contient au moins une lettre ?
+		$containsLetter = preg_match('/[a-zA-Z]/', $password);
+		// le mot de passe contient au moins un chiffre ?
+		$containsDigit = preg_match('/\d/', $password);
+		// le mot de passe contient au moins un caractère spécial ?
+		$containsSpecial = preg_match('/[^a-zA-Z\d]/', $password);
+	}
+		if (!$containsLetter || !$containsDigit || !$containsSpecial) {
+			$password_error = "Veuillez choisir un mot de passe avec au moins une lettre, un chiffre et un caractère spécial !";
+		}
 				// protection injection XSS et suppression des espaces en début et fin de chaîne...
 	$password = trim(strip_tags($password));
 
