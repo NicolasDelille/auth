@@ -43,3 +43,17 @@
 		return $votesResult;
 
 	}
+
+	// sécurisation de la page
+
+	function lock()
+	{
+		// si on a oublié d'appeler session_start
+		if (!isset($_SESSION)) {
+			session_start();
+		}
+		if (empty($_SESSION['user'])) {
+			header("location: login.php");
+			die();
+			}
+	}

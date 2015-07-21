@@ -2,11 +2,8 @@
 	session_start();
 	include ('functions.php');
 	// pr($_SESSION);
-	if (empty($_SESSION['user'])) {
-		header("location: login.php");
-		die();
-	}
-
+	
+	lock();
 	// pr($_SESSION['user']);
 	// $user = $_SESSION['user'];
 	// echo $user['username'];
