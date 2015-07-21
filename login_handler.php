@@ -41,18 +41,24 @@
 			// echo "le mot de passe est correct";
 			unset($foundUser['password']);
 			$_SESSION['user'] = $foundUser;
-			pr($_SESSION['user']);
+			// pr($_SESSION['user']);
 
 			// redirection
 			header("Location: welcome.php");
 			die();
 		}
 		else{
-			echo "mot de passe incorrect";
+			// echo "mot de passe incorrect";
+			$_SESSION['login_error'] = "Mot de passe ou nom d'utilisateur erroné !";
+			header("location: login.php");
+			die();
 		}
 
 	}
 	else {
 		// redirection to login.php with errorMessage
-		echo 'not found !';
+		// echo 'not found !';
+		$_SESSION['login_error'] = "Mot de passe ou nom d'utilisateur erroné !";
+			header("location: login.php");
+			die();
 	}

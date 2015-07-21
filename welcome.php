@@ -1,9 +1,10 @@
 <?php
 	session_start();
-	if (empty($_SESSION)) {
+	include ('functions.php');
+	// pr($_SESSION);
+	if (empty($_SESSION['user'])) {
 		header("location: login.php");
 	}
-	include ('functions.php');
 
 	// pr($_SESSION['user']);
 	$user = $_SESSION['user'];
@@ -16,8 +17,16 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Bienvenue</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body>
+	<div class="container">
+		
+	<header><p><?php echo $user['username']?>
+		<a href="logout.php" class="btn btn-primary btn-xs">Log out</a></p>
+	</header>
 	<h1>Bienvenue <?php echo $user['username']?>!</h1>
+	
+	</div>
 </body>
 </html>

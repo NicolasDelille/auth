@@ -1,3 +1,12 @@
+<?php
+	session_start();
+	
+	$login_error = "";
+	
+	if (!empty($_SESSION['login_error'])) {
+		$login_error = $_SESSION['login_error'];
+	}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,24 +27,36 @@
 					<label for="email" class="col-lg-2 control-label">Email</label>
 					<div class="col-lg-10">
 						<input class="form-control" id="email" name="email" placeholder="Email" type="text">
-						<p class="text-danger"></p>
 					</div>
 				</div>
+
+				<br>
+				<br>
 							
 				<div class="form-group">
 					<label for="password" class="col-lg-2 control-label">Mot de passe</label>
 					<div class="col-lg-10">
 						<input class="form-control" id="password" name="password" placeholder="Mot de passe" type="password">
-						<p class="text-danger"></p>
 					</div>
 				</div>
+
+				<br>
+				<br>
 
 				<div class="form-group">
 					<div class="col-lg-10 col-lg-offset-2">
 						<button type="reset" class="btn btn-default">Annuler</button>
 						<button type="submit" class="btn btn-primary">Valider</button>
+						<p class="text-danger">
+							<?php 
+							echo $login_error;
+							unset($_SESSION['login_error']);
+							?>
+					</p>
 					</div>
 				</div>
+
+				
 				
 
 			</fieldset>
