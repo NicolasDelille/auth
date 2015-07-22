@@ -1,9 +1,9 @@
 <?php
 	session_start();
 	include("config.php");
+	include("db.php");
 	include("vendor/autoload.php");
 	include("functions.php");
-	include("db.php");
 
 	$password_error = "";
 	$passwordField_error = "";
@@ -14,17 +14,20 @@
 
 		// echo $_GET["i"];
 		$token = $_GET["i"];
+		// echo $token;
 
 		$sql = "SELECT id, token, email, username, password, date_created, date_modified 
 				FROM users 
-				WHERE :token = token";
+				WHERE token = :token";
 
 		$sth = $dbh->prepare($sql);
 		$sth->bindValue(':token',$token);
 		$sth->execute();
 
 		$user = $sth->fetch();
+		// pr($user);
 		$_SESSION['user'] = $user;
+		// echo($_SESSION['user']['id']);
 	}
 
 	// pr($user);
@@ -34,7 +37,8 @@
 	if (!empty($_POST)) {
 		$password = $_POST['password'];
 		$passwordConfirm = $_POST['passwordConfirm'];
-		$id = $_SESSION['id'];
+		// $id = $_SESSION['id'];
+		// pr($_SESSION)['user']['id'];
 
 		if (empty($password)) {
 			$password_error = "Veuillez renseigner votre mot de passe";
@@ -70,7 +74,7 @@
 		if ($password_error == "" && $passwordConfirm_error == "") {
 		$sql = "UPDATE users
 				SET password = :password, token = NULL, date_modified = NOW() 
-				WHERE :id = id";
+				WHERE id = :id";
 		
 
 		$sth = $dbh->prepare($sql);
@@ -79,20 +83,9 @@
 		// hashage
 		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 		$sth->bindValue(':password',$hashedPassword);
-		$sth->bindValue(':id',$id);
+		$sth->bindValue(':id',$_SESSION['user']['id']);
 
 		$sth->execute();
-
-		// connecter l'utilisateur programmatiquement
-		// on va recherche toutes les infos que l'on vient d'insérer
-		// $sql = "SELECT id, email, username, password, date_created, date_modified
-		// 		FROM users
-		// 		WHERE id = :id";
-
-		// 		$sth = $dbh->prepare($sql);
-		// 		$sth->bindValue(":id",$dbh->lastInsertId());
-		// 		$sth->execute();
-		// 		$user = $sth->fetch();
 
 		header("location: welcome.php");
 		die();
