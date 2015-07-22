@@ -32,7 +32,7 @@
 	$mail->SMTPSecure = 'tls';
 	$mail->SMTPAuth = true;
 	$mail->Username = SMTPUSER;
-	$mail->Password = SMTPHOST;
+	$mail->Password = SMTPPASS;
 
 	//qui envoie, et qui reçoit
 	$mail->setFrom('info@nanterre.com');
