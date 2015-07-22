@@ -47,12 +47,16 @@
 					<div class="col-lg-10 col-lg-offset-2">
 						<button type="reset" class="btn btn-default">Annuler</button>
 						<button type="submit" class="btn btn-primary">Valider</button>
+						
 						<p class="text-danger">
 							<?php 
 							echo $login_error;
 							unset($_SESSION['login_error']);
 							?>
 					</p>
+					</div>
+					<div class="col-lg-10 col-lg-offset-2">
+						<a href="forgot_password.php">Mot de passe oublié ?</a>
 					</div>
 				</div>
 
