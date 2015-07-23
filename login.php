@@ -1,7 +1,11 @@
 <?php
 	session_start();
+	include('config.php');
+	include('db.php');
+	include ('functions.php');
 	
 	$login_error = "";
+	
 	
 	if (!empty($_SESSION['login_error'])) {
 		$login_error = $_SESSION['login_error'];
@@ -37,6 +41,11 @@
 					<label for="password" class="col-lg-2 control-label">Mot de passe</label>
 					<div class="col-lg-10">
 						<input class="form-control" id="password" name="password" placeholder="Mot de passe" type="password">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="rememberMe" id="rememberMe" value="yes"> Remember me ?
+						</label>
+					</div>
 					</div>
 				</div>
 

@@ -9,24 +9,26 @@
 	$passwordField_error = "";
 	$passwordConfirm_error = "";
 	$passwordConfirmField_error = "";
+	// echo $_GET['j'];
 
-	if(!empty($_GET['i'])){
+	if(!empty($_GET['i']['j'])){
 
 		// echo $_GET["i"];
-		$token = $_GET["i"];
+
+		$token = $_GET['i'];
+		$email = $_GET['j'];
 		// echo $token;
 
-		$sql = "SELECT id, token, email, username, password, date_created, date_modified 
-				FROM users 
-				WHERE token = :token";
+		$sql = "SELECT * FROM users 
+				WHERE email = :email";
 
 		$sth = $dbh->prepare($sql);
-		$sth->bindValue(':token',$token);
+		$sth->bindValue(':email',$email);
 		$sth->execute();
 
-		$user = $sth->fetch();
-		// pr($user);
-		$_SESSION['user'] = $user;
+		$foundUser = $sth->fetch();
+		pr($foundUser);
+		// $_SESSION['user'] = $user;
 		// echo($_SESSION['user']['id']);
 	}
 
@@ -34,64 +36,64 @@
 
 	// pr($_SESSION);
 
-	if (!empty($_POST)) {
-		$password = $_POST['password'];
-		$passwordConfirm = $_POST['passwordConfirm'];
-		// $id = $_SESSION['id'];
-		// pr($_SESSION)['user']['id'];
+	// if (!empty($_POST)) {
+	// 	$password = $_POST['password'];
+	// 	$passwordConfirm = $_POST['passwordConfirm'];
+	// 	// $id = $_SESSION['id'];
+	// 	// pr($_SESSION)['user']['id'];
 
-		if (empty($password)) {
-			$password_error = "Veuillez renseigner votre mot de passe";
-			$passwordField_error = "inputError";
-		}
-		elseif (strlen($password) < 6) {
-		$passwordField_error = "Votre mot de passe doit contenir au moins 6 caractères";
-		}
-		else{
-			// le mot de passe contient au moins une lettre ?
-			$containsLetter = preg_match('/[a-zA-Z]/', $password);
-			// le mot de passe contient au moins un chiffre ?
-			$containsDigit = preg_match('/\d/', $password);
-			// le mot de passe contient au moins un caractère spécial ?
-			$containsSpecial = preg_match('/[^a-zA-Z\d]/', $password);
-		}
-		if (!$containsLetter || !$containsDigit || !$containsSpecial) {
-			$password_error = "Veuillez choisir un mot de passe avec au moins une lettre, un chiffre et un caractère spécial !";
-		}
-				// protection injection XSS et suppression des espaces en début et fin de chaîne...
-		$password = trim(strip_tags($password));
+	// 	if (empty($password)) {
+	// 		$password_error = "Veuillez renseigner votre mot de passe";
+	// 		$passwordField_error = "inputError";
+	// 	}
+	// 	elseif (strlen($password) < 6) {
+	// 	$passwordField_error = "Votre mot de passe doit contenir au moins 6 caractères";
+	// 	}
+	// 	else{
+	// 		// le mot de passe contient au moins une lettre ?
+	// 		$containsLetter = preg_match('/[a-zA-Z]/', $password);
+	// 		// le mot de passe contient au moins un chiffre ?
+	// 		$containsDigit = preg_match('/\d/', $password);
+	// 		// le mot de passe contient au moins un caractère spécial ?
+	// 		$containsSpecial = preg_match('/[^a-zA-Z\d]/', $password);
+	// 	}
+	// 	if (!$containsLetter || !$containsDigit || !$containsSpecial) {
+	// 		$password_error = "Veuillez choisir un mot de passe avec au moins une lettre, un chiffre et un caractère spécial !";
+	// 	}
+	// 			// protection injection XSS et suppression des espaces en début et fin de chaîne...
+	// 	$password = trim(strip_tags($password));
 
-			// password confirm
-		if (empty($passwordConfirm)) {
-			$passwordConfirm_error = "Veuillez renseigner votre mot de passe";
-			$passwordConfirmField_error = "inputError";
-		}
-		elseif ($passwordConfirm != $password) {
-			$passwordConfirm_error = "Le mot de passe est différent !";
-			$passwordConfirmField_error = "inputError";
-		}
+	// 		// password confirm
+	// 	if (empty($passwordConfirm)) {
+	// 		$passwordConfirm_error = "Veuillez renseigner votre mot de passe";
+	// 		$passwordConfirmField_error = "inputError";
+	// 	}
+	// 	elseif ($passwordConfirm != $password) {
+	// 		$passwordConfirm_error = "Le mot de passe est différent !";
+	// 		$passwordConfirmField_error = "inputError";
+	// 	}
 
-		if ($password_error == "" && $passwordConfirm_error == "") {
-		$sql = "UPDATE users
-				SET password = :password, token = NULL, date_modified = NOW() 
-				WHERE id = :id";
+	// 	if ($password_error == "" && $passwordConfirm_error == "") {
+	// 	$sql = "UPDATE users
+	// 			SET password = :password, token = NULL, date_modified = NOW() 
+	// 			WHERE id = :id";
 		
 
-		$sth = $dbh->prepare($sql);
+	// 	$sth = $dbh->prepare($sql);
 		
 		
-		// hashage
-		$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-		$sth->bindValue(':password',$hashedPassword);
-		$sth->bindValue(':id',$_SESSION['user']['id']);
+	// 	// hashage
+	// 	$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+	// 	$sth->bindValue(':password',$hashedPassword);
+	// 	$sth->bindValue(':id',$_SESSION['user']['id']);
 
-		$sth->execute();
+	// 	$sth->execute();
 
-		header("location: welcome.php");
-		die();
+	// 	header("location: welcome.php");
+	// 	die();
 
-		}
-	}
+	// 	}
+	// }
 ?>
 <!doctype html>
 <html lang="en">

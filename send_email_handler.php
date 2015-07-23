@@ -10,15 +10,17 @@
 
 	$email = $_SESSION['email'];
 	$token = randomString();
+	$hashedToken = password_hash($token, PASSWORD_DEFAULT);
+	
 	// echo $token;
 
 	$sql = "UPDATE users
-			SET token = :token, date_modified = NOW()
+			SET token = :hashedtoken, date_modified = NOW()
 			WHERE email = :email";
 
 	$sth = $dbh->prepare($sql);
 	$sth->bindValue(':email', $email);
-	$sth->bindValue(':token', $token);
+	$sth->bindValue(':hashedToken',$hashedToken);
 	$sth->execute();
 
 
@@ -54,7 +56,7 @@
 
 	//message (avec balises possibles)
 	$mail->Body = 'Bonjour, veuillez cliquer sur le lien pour renouveler votre mot de passe :
-	<a href="http://localhost/auth/change_password.php?i='.$token.'">Cliquez ici pour créer un nouveau mot de passe</a>';
+	<a href="http://localhost/auth/change_password.php?i='.$token.'&j='.$email.'">Cliquez ici pour créer un nouveau mot de passe</a>';
 
 	// $mail->addAttachment('panda.gif');
 
